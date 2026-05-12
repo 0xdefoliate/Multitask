@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlinxSerialization)
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
 android {
@@ -39,6 +41,15 @@ android {
     buildFeatures {
         compose = true
     }
+
+    // I don't have a clue why on earth Android Studio
+    // complains about this happened, but I'll put
+    // a `noinspection` on it for now.
+    //
+    //noinspection WrongGradleMethod
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -59,4 +70,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    annotationProcessor(libs.androidx.room.compiler)
 }
