@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -31,17 +30,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import se.axelkarlsson.multitask.ui.route.AddRoutineRoute
-import se.axelkarlsson.multitask.ui.route.OverviewTab
-import se.axelkarlsson.multitask.ui.route.RoutinesTab
+import se.axelkarlsson.multitask.route.addroutine.AddRoutineRoute
+import se.axelkarlsson.multitask.route.addroutine.AddRoutineScreen
+import se.axelkarlsson.multitask.route.overview.OverviewRoute
+import se.axelkarlsson.multitask.route.overview.OverviewScreen
+import se.axelkarlsson.multitask.route.routines.RoutinesRoute
+import se.axelkarlsson.multitask.route.routines.RoutinesScreen
 import se.axelkarlsson.multitask.ui.theme.MultitaskTheme
 import se.axelkarlsson.multitask.util.Tab
 
 class MainActivity : ComponentActivity() {
 
     val tabs = listOf(
-        OverviewTab,
-        RoutinesTab
+        OverviewRoute,
+        RoutinesRoute
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,18 +113,18 @@ fun ContentView(tabs: List<Tab>) {
                 navController = navController,
                 startDestination = tabs.first()
             ) {
-                composable<OverviewTab> {
-                    title = OverviewTab.label
+                composable<OverviewRoute> {
+                    title = OverviewRoute.label
                     showTabBar = true
 
-                    OverviewTab.ui.Screen()
+                    OverviewScreen()
                 }
 
-                composable<RoutinesTab> {
-                    title = RoutinesTab.label
+                composable<RoutinesRoute> {
+                    title = RoutinesRoute.label
                     showTabBar = true
 
-                    RoutinesTab.ui.Screen(callback = {
+                    RoutinesScreen(callback = {
                         navController.navigate(AddRoutineRoute)
                     })
                 }
@@ -135,7 +137,7 @@ fun ContentView(tabs: List<Tab>) {
                     title = "Add Routine"
                     showTabBar = false
 
-                    AddRoutineRoute.ui.Screen()
+                    AddRoutineScreen()
                 }
             }
         }
