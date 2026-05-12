@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.layout.padding
@@ -70,31 +73,34 @@ fun ContentView(tabs: List<Tab>) {
                 })
             },
             bottomBar = {
-                if (!showTabBar) {
-                    return@Scaffold
-                }
-                BottomAppBar {
-                    NavigationBar {
-                        tabs.forEach { tab ->
-                            val selected = destination
-                                ?.hierarchy
-                                ?.any {
-                                    it.hasRoute(tab::class)
-                                } == true
+                AnimatedVisibility(
+                    visible = showTabBar,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    BottomAppBar {
+                        NavigationBar {
+                            tabs.forEach { tab ->
+                                val selected = destination
+                                    ?.hierarchy
+                                    ?.any {
+                                        it.hasRoute(tab::class)
+                                    } == true
 
-                            NavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(tab.icon),
-                                        contentDescription = null
-                                    )
-                                },
-                                label = { Text(tab.label) },
-                                selected = selected,
-                                onClick = {
-                                    navController.navigate(tab)
-                                }
-                            )
+                                NavigationBarItem(
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(tab.icon),
+                                            contentDescription = null
+                                        )
+                                    },
+                                    label = { Text(tab.label) },
+                                    selected = selected,
+                                    onClick = {
+                                        navController.navigate(tab)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
